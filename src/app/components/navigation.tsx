@@ -4,7 +4,6 @@ import Link from "next/link"
 import type { Session } from "@supabase/auth-helpers-nextjs"
 
 // ナビゲーション
-
 type Props = {
   session: Session | null
 }
