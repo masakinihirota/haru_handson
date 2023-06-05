@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useRouter } from "next/navigation"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
 import Loading from "@/app/loading"
@@ -13,12 +13,12 @@ type Schema = z.infer<typeof schema>
 
 // 入力データの検証ルールを定義
 const schema = z.object({
-  name: z.string().min(6, { message: "名前を入力してください 6文字以上" }),
-  email: z.string().email({ message: "メールアドレスの形式で入力してください" }),
-  password: z.string().min(8, { message: "パスワードは8文字以上で入力してください" }),
+  name: z.string().min(2, { message: "2文字以上入力する必要があります。" }),
+  email: z.string().email({ message: "メールアドレスの形式ではありません。" }),
+  password: z.string().min(6, { message: "6文字以上入力する必要があります。" }),
 })
 
-// サインアップページ
+// サインアップ
 const Signup = () => {
   const router = useRouter()
   const supabase = createClientComponentClient<Database>()
@@ -32,11 +32,7 @@ const Signup = () => {
     reset,
   } = useForm({
     // 初期値
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
+    defaultValues: { name: "", email: "", password: "" },
     // 入力値の検証
     resolver: zodResolver(schema),
   })
@@ -57,7 +53,7 @@ const Signup = () => {
 
       // エラーチェック
       if (errorSignup) {
-        setMessage("エラーが発生しました" + errorSignup.message)
+        setMessage("エラーが発生しました。" + errorSignup.message)
         return
       }
 
@@ -66,15 +62,17 @@ const Signup = () => {
 
       // エラーチェック
       if (updateError) {
-        setMessage("エラーが発生しました" + updateError.message)
+        setMessage("エラーが発生しました。" + updateError.message)
         return
       }
 
-      // 入力フォームをリセット
+      // 入力フォームクリア
       reset()
-      setMessage("確認メールを送信しました。メールに記載されているリンクをクリックしてください。")
+      setMessage(
+        "本登録用のURLを記載したメールを送信しました。メールをご確認の上、メール本文中のURLをクリックして、本登録を行ってください。",
+      )
     } catch (error) {
-      setMessage("エラーが発生しました" + error)
+      setMessage("エラーが発生しました。" + error)
       return
     } finally {
       setLoading(false)
@@ -109,6 +107,7 @@ const Signup = () => {
           />
           <div className="my-3 text-sm text-center text-red-500">{errors.email?.message}</div>
         </div>
+
         {/* パスワード */}
         <div className="mb-5">
           <input
