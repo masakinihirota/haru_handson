@@ -84,53 +84,63 @@ const Signup = () => {
   }
 
   return (
-    <div>
-      <div>サインアップ</div>
+    <div className="max-w-[400px] mx-auto">
+      <div className="mb-10 text-xl font-bold text-center">サインアップ</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* 名前 */}
-        <div>
-          <input type="text" className="" placeholder="名前" id="name" {...register("name", { required: true })} />
-          <div>{errors.name?.message}</div>
+        <div className="mb-3">
+          <input
+            type="text"
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-sky-500"
+            placeholder="名前"
+            id="name"
+            {...register("name", { required: true })}
+          />
+          <div className="my-3 text-sm text-center text-red-500">{errors.name?.message}</div>
         </div>
+
         {/* メールアドレス */}
-        <div>
+        <div className="mb-3">
           <input
             type="email"
-            className=""
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-sky-500"
             placeholder="メールアドレス"
             id="email"
             {...register("email", { required: true })}
           />
-          <div>{errors.email?.message}</div>
+          <div className="my-3 text-sm text-center text-red-500">{errors.email?.message}</div>
         </div>
         {/* パスワード */}
-        <div>
+        <div className="mb-5">
           <input
             type="password"
-            className=""
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-sky-500"
             placeholder="パスワード"
             id="password"
             {...register("password", { required: true })}
           />
-          <div>{errors.password?.message}</div>
+          <div className="my-3 text-sm text-center text-red-500">{errors.password?.message}</div>
         </div>
 
         {/* サインアップボタン */}
-        <div className="">
+        <div className="mb-5">
           {loading ? (
             <Loading />
           ) : (
-            <button type="submit" className="">
+            <button
+              type="submit"
+              className="w-full p-2 text-sm font-bold text-white rounded-full bg-sky-500 hover:brightness-95"
+            >
               サインアップ
             </button>
           )}
         </div>
       </form>
 
-      {message && <div>{message}</div>}
+      {message && <div className="mb-5 text-sm text-center text-red-500">{message}</div>}
 
-      <div className="">
-        <Link href="/auth/signin" className="">
+      <div className="text-sm text-center">
+        <Link href="/auth/signin" className="font-bold text-gray-500">
           ログインはこちら
         </Link>
       </div>
