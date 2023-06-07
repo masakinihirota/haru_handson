@@ -2,9 +2,8 @@
 // Zustand Reactの状態管理ライブラリ
 // https://github.com/pmndrs/zustand
 
-import { Database } from "@/lib/database.types"
 import { create } from "zustand"
-
+import type { Database } from "@/lib/database.types"
 type ProfileType = Database["public"]["Tables"]["profiles"]["Row"]
 
 type StateType = {
@@ -19,11 +18,13 @@ const useStore = create<StateType>((set) => ({
     email: "",
     name: "",
     introduce: "",
-    avaatar_url: "",
+    avatar_url: "",
   },
 
   // アップデート
+  // 非同期的
   // setUser: (payload) => set(() => ({ user: payload })),
+  // 同期的
   setUser: (payload) => set({ user: payload }),
 }))
 
