@@ -20,7 +20,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <main className="container flex-1 max-w-screen-sm px-1 py-5 mx-auto">{children}</main>
 
           <footer className="py-5">
-            <div className="text-sm text-center ">Copyright © All rights reserved | FullStackChannel</div>
+            <div className="text-sm text-center "> VNS </div>
           </footer>
         </div>
       </body>
