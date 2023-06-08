@@ -53,7 +53,7 @@ const Profile = () => {
 
   // 画像アップロード
   const onUploadImage = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files
+    const files = e.target.files
     setFileMessage("")
 
     // ファイルが選択されていない場合
@@ -62,8 +62,8 @@ const Profile = () => {
       return
     }
 
-    const fileSize = file[0]?.size / 1024 / 1024 // size in MB
-    const fileType = file[0]?.type // MIME type of the file
+    const fileSize = files[0]?.size / 1024 / 1024 // size in MB
+    const fileType = files[0]?.type // MIME type of the file
 
     // 画像ファイルサイズが2MBを超えている場合
 
@@ -83,7 +83,7 @@ const Profile = () => {
   }, [])
 
   // 送信
-  const onSubmit: SubmitHandler<z.Schema> = async (data) => {
+  const onSubmit: SubmitHandler<Schema> = async (data) => {
     setLoading(true)
     setMessage("")
 
@@ -101,13 +101,15 @@ const Profile = () => {
           setMessage("画像のアップロードに失敗しました" + storageError.message)
           return
         }
+
         if (avatar_url) {
           const fileName = avatar_url.split("/").slice(-1)[0]
+
           // 古い画像を削除
           await supabase.storage.from("profile").remove([`${user.id}/${fileName}`])
         }
 
-        //  画像のURLを取得
+        // 画像のURLを取得
         const { data: urlData } = await supabase.storage.from("profile").getPublicUrl(storageData.path)
 
         avatar_url = urlData.publicUrl
@@ -143,14 +145,14 @@ const Profile = () => {
     <div>
       <div className="mb-10 text-xl font-bold text-center">プロフィール</div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* アバター動画 */}
+        {/* アバター画像 */}
         <div className="mb-5">
           <div className="flex flex-col items-center justify-center mb-5 text-sm">
             <div className="relative w-24 h-24 mb-5">
               <Image src={avatarUrl} className="object-cover rounded-full" alt="avatar" fill />
             </div>
             <input type="file" id="avatar" onChange={onUploadImage} />
-            {fileMessage && <div className="my-5 text-center text-red-500 ">{fileMessage}</div>}
+            {fileMessage && <div className="my-5 text-center text-red-500">{fileMessage}</div>}
           </div>
         </div>
 
@@ -159,7 +161,7 @@ const Profile = () => {
           <div className="mb-1 text-sm font-bold">名前</div>
           <input
             type="text"
-            className="w-full px-3 py-2 border rounded-mb focus:outline-none focus:border-sky-500"
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-sky-500"
             placeholder="名前"
             id="name"
             {...register("name", { required: true })}
